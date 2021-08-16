@@ -2,7 +2,9 @@ import numpy as np
 import csv
 import Animation_Length as ani
 ##--------Constant Define------
-uid = 544
+
+uid = 620
+
 #334 黑獸 size = 55, all larger than 55 have to have try protection
 #442 黑傑
 #270 皇獸
@@ -62,8 +64,8 @@ except:
     atk = atk1
 inter1 = int(source[stage][4]) #間隔
 arange = int(source[stage][5]) #射程   #no need multiply.
-arrange2 = int(source[stage][44]) #感應射程 多段攻擊用
-arrange3 = int(source[stage][45]) #延伸射程 多段攻擊用
+arrange2 = int(source[stage][44]) #感應射程 遠方攻擊用
+arrange3 = int(source[stage][45]) #延伸射程 遠方攻擊用
 price= int(source[stage][6])   #Chapter1
 sing=  int(source[stage][12])   #單體/範圍
 regen = int(source[stage][7]) #再生產
@@ -82,7 +84,7 @@ doAncient = 0
 doDevil = 0 
 try:
     doAncient= int(source[stage][78])
-    doDevil=   int(source[stage][10])
+    doDevil=   int(source[stage][96])
 except:
     print("This cat is older than 7.0, not exist ancient")
     
@@ -114,6 +116,30 @@ try:
     
 except:
     print("This cat is older than 7.0, not exist ultradmg like")
+ulwave = 0
+ulwave_dist = 0
+ulwave_range = 0
+ulwave_num = 0
+try:
+    ulwave= int(source[stage][86])
+    ulwave_dist= int(source[stage][87])
+    ulwave_range= int(source[stage][88])
+    ulwave_num= int(source[stage][89])
+except:
+    print("This cat is older than 9.5, not exist ulwave-relate def")
+curse = 0
+curse2 = 0
+try:
+    curse = int(source[stage][92]) #詛咒機率
+    curse2 = int(source[stage][93]) #詛咒時長
+
+except:
+    print("This cat is older than 9.8, not exist curse-relative def")
+doSmallWave = 0
+try:
+    doSmallWave = int(source[stage][94])
+except:
+    print("This cat is older than 10.1, not exist small-wave")
 
 #These not affect dmg or health
 doStop = int(source[stage][25])  #暫停
@@ -133,6 +159,13 @@ doImPush = int(source[stage][48])
 doImStop = int(source[stage][49])
 doImSlow = int(source[stage][50])
 doImAtkDown = int(source[stage][51])
+doImTeleport = 0
+doImCurse = 0
+try:
+    doImTeleport = int(source[stage][75])
+    doImCurse = int(source[stage][79])
+except:
+    print("This cat is Older than teleport and ancient curse immune, not exist Teleport Immunnity")
 isZombieKiller = 0
 isWitchKiller = 0
 isEvaKiller = 0
@@ -153,6 +186,7 @@ try:
 
 except:
     print("Not Exist Special Killer")
+
 
 ##-----------
 #str.replace(old, new[, max])
@@ -473,12 +507,13 @@ if(existColor):
         SPAbility = SPAbility + "對"+colortemplate+"屬性敵人造成3倍(4倍)傷害\n"
     if(doSuperHealth):
         SPAbility = SPAbility + "受到"+colortemplate+"屬性敵人攻擊的傷害減至1/4(1/5)"
-        
+
 if(doCri>0):
     SPAbility = SPAbility + str(doCri) + "%機率使出會心一擊\n"
 if(doCriEx>0):
     SPAbility = SPAbility + str(doCriEx) + "%機率使出"+str(doCriEx2)+"%渾身一擊\n"
-
+if(doSmallWave):
+    SPAbility = SPAbility + "小波動\n"
 if(doImWave):
     SPAbility = SPAbility + "波動無效\n"
 if(doStopWave):
@@ -491,6 +526,11 @@ if(doImSlow):
     SPAbility = SPAbility + "緩速無效\n"
 if(doImAtkDown):
     SPAbility = SPAbility + "降攻無效\n"
+if(doImTeleport):
+    SPAbility = SPAbility + "傳送無效\n"
+if(doImCurse):
+    SPAbility = SPAbility + "詛咒無效\n"
+
 if(isZombieKiller):
     SPAbility = SPAbility + "殭屍殺手\n"
 if(isWitchKiller):
