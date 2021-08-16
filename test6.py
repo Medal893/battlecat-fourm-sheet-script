@@ -372,16 +372,17 @@ for i in range(0,7):
 
 #Frequency, Need Consider MultiAttack
 try:
-    str4 = str(inter21)
+    str4 = str(round(inter21/30,2))
     if(inter22>0):
-        str4 = str4 +"\n/ " + str(inter22)
+        str4 = str4 +"秒\n/ " + str(round(inter22/30,2))
     if(inter23>0):
-        str4 = str4 +"\n/ " + str(inter23)
+        str4 = str4 +"秒\n/ " + str(round(inter23/30,2))
 except:
     print("No MultiAttack")
 
-str4 = str4 + "f"
+str4 = str4 + "秒"
 raw = raw.replace("_fq2",str4) #出招時間
+
 raw = raw.replace("_fq1",str(round(atkfq,2))) #攻擊頻率
 raw = raw.replace("_fq4",str(round((regen*2-254)/30,2))) #再生產
 
