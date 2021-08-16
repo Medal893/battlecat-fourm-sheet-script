@@ -2,17 +2,21 @@ import numpy as np
 import csv
 import Animation_Length as ani
 ##--------Constant Define------
-uid = 381
+uid = 544
 #334 黑獸 size = 55, all larger than 55 have to have try protection
 #442 黑傑
 #270 皇獸
 #319 白無垢 #381白傑
-stage = 1;  #0 = stage1, 1 = stage2, 2 = stage3
+stage = 2;  #0 = stage1, 1 = stage2, 2 = stage3
 ##--------End Constant Define---
 ##POS
 filename = 'Unit/unit'+str(uid)+'.csv'
 print(filename)
-atk_anil = ani.getAniLength(uid,stage)
+atk_anil = 0
+try:
+    atk_anil = ani.getAniLength(uid,stage)
+except:
+    print("Animation infor not exist or failed")
 atk_allinf =  187 #frame.
 ##POS
 
@@ -101,6 +105,9 @@ doCriEx2 = 0
 try:
     doUltraDmg = int(source[stage][81]) #極度傷害 #UR
     doUltraHealth = int(source[stage][80]) #極度耐打 #UR
+    print("doUltra:")
+    print(doUltraDmg)
+    print(doUltraHealth)
     doCriEx = int(source[stage][82]) #渾身機率
     doCriEx2 = int(source[stage][83])#渾身倍率
     atk = atk
@@ -141,6 +148,8 @@ try:
     doAtkTime = int(source[stage][55])#攻擊回數, should be -1
     doLifeTime = int(source[stage][57])#生存時長, should be -1
     doBreakShield = int(source[stage][70]) #破盾機率
+    #96-1 = 95
+    doBreakDevilShield = int(source[stage][95])#破惡魔盾機率
 
 except:
     print("Not Exist Special Killer")
@@ -188,7 +197,7 @@ if(existColor):
 
 #Fill Atk Blenks
 #1 Atk
-if(not(doGoodAt==1 or doSuperDmg==1)): #Check if need the Tempalte or not
+if(not(doGoodAt==1 or doSuperDmg==1 or doUltraDmg==1)): #Check if need the Tempalte or not
     str1 = "Temp11"
 else:
     str1 = stri;
@@ -218,12 +227,19 @@ for i in range(0,7):
             str2 = str2.replace("Temp12",str(ansval))
         if(existColor_N):
             ansval = int(round(atk*cst*3))
-            str2 = str2.replace("Temp13",str(ansval))        
+            str2 = str2.replace("Temp13",str(ansval))
+    if(doUltraDmg):
+        if(existColor_G):
+            ansval = int(round(atk*cst*6))
+            str2 = str2.replace("Temp12",str(ansval))
+        if(existColor_N):
+            ansval = int(round(atk*cst*5))
+            str2 = str2.replace("Temp13",str(ansval))
    # print(str2)
     raw = raw.replace(tempstr,str2)
 
 #2 Health
-if(doGoodAt==1 or doSuperHealth==1): #Check if need the Tempalte or not
+if(doGoodAt==1 or doSuperHealth==1 or doUltraHealth==1): #Check if need the Tempalte or not
     str1 = stri
 else:
     str1 = "Temp11"
@@ -252,13 +268,20 @@ for i in range(0,7):
             str2 = str2.replace("Temp12",str(ansval))
         if(existColor_N):
             ansval = int(round(hp*cst*4))
-            str2 = str2.replace("Temp13",str(ansval))        
+            str2 = str2.replace("Temp13",str(ansval))
+    if(doUltraHealth):
+        if(existColor_G):
+            ansval = int(round(hp*cst*7))
+            str2 = str2.replace("Temp12",str(ansval))
+        if(existColor_N):
+            ansval = int(round(hp*cst*6))
+            str2 = str2.replace("Temp13",str(ansval))    
 #    print(str2)
     raw = raw.replace(tempstr,str2)
 
 
 #3 Hard
-if(doGoodAt==1 or doSuperHealth==1): #Check if need the Tempalte or not
+if(doGoodAt==1 or doSuperHealth==1 or doUltraHealth==1): #Check if need the Tempalte or not
     str1 = stri
 else:
     str1 = "Temp11"
@@ -287,7 +310,14 @@ for i in range(0,7):
             str2 = str2.replace("Temp12",str(ansval))
         if(existColor_N):
             ansval = int(round(hp*cst*4)/kb)
-            str2 = str2.replace("Temp13",str(ansval))        
+            str2 = str2.replace("Temp13",str(ansval))
+    if(doSuperHealth):
+        if(existColor_G):
+            ansval = int(round(hp*cst*7)/kb)
+            str2 = str2.replace("Temp12",str(ansval))
+        if(existColor_N):
+            ansval = int(round(hp*cst*6)/kb)
+            str2 = str2.replace("Temp13",str(ansval))  
 #    print(str2)
     raw = raw.replace(tempstr,str2)
 
@@ -313,7 +343,7 @@ doCriEx2 = 0
 print(atk)
 atk = (1+(doCri/100)*(1+doCriEx2*(doCri/100)))*atk
 print(atk)
-if(not(doGoodAt==1 or doSuperDmg==1)): #Check if need the Tempalte or not
+if(not(doGoodAt==1 or doSuperDmg==1 or doUltraDmg==1)): #Check if need the Tempalte or not
     str1 = "Temp11"
 else:
     str1 = stri;
@@ -358,6 +388,19 @@ for i in range(0,7):
         if(existColor_N):   
             if not rdpoint:
                 ansval = int(round(atk*cst*3/atkfq,rdpoint))
+            else:
+                ansval = round(atk*cst*3/atkfq,rdpoint)
+            str2 = str2.replace("Temp13", str(ansval))
+    if(doUltraDmg):
+        if(existColor_G):
+            if not rdpoint:
+                ansval = int(round(atk*cst*6/atkfq,rdpoint))
+            else:
+                ansval = round(atk*cst*4/atkfq,rdpoint)
+            str2 = str2.replace("Temp12", str(ansval))
+        if(existColor_N):   
+            if not rdpoint:
+                ansval = int(round(atk*cst*5/atkfq,rdpoint))
             else:
                 ansval = round(atk*cst*3/atkfq,rdpoint)
             str2 = str2.replace("Temp13", str(ansval))
