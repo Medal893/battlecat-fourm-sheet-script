@@ -2,9 +2,7 @@ import numpy as np
 import csv
 import Animation_Length as ani
 ##--------Constant Define------
-
-uid = 620
-
+uid = 5
 #334 黑獸 size = 55, all larger than 55 have to have try protection
 #442 黑傑
 #270 皇獸
@@ -12,7 +10,12 @@ uid = 620
 stage = 2;  #0 = stage1, 1 = stage2, 2 = stage3
 ##--------End Constant Define---
 ##POS
-filename = 'Unit/unit'+str(uid)+'.csv'
+if(uid<10):
+    filename = 'Unit/unit00'+str(uid)+'.csv'
+elif(uid<100):
+    filename = 'Unit/unit0'+str(uid)+'.csv'
+else:
+    filename = 'Unit/unit'+str(uid)+'.csv'
 print(filename)
 atk_anil = 0
 try:
@@ -107,9 +110,6 @@ doCriEx2 = 0
 try:
     doUltraDmg = int(source[stage][81]) #極度傷害 #UR
     doUltraHealth = int(source[stage][80]) #極度耐打 #UR
-    print("doUltra:")
-    print(doUltraDmg)
-    print(doUltraHealth)
     doCriEx = int(source[stage][82]) #渾身機率
     doCriEx2 = int(source[stage][83])#渾身倍率
     atk = atk
@@ -183,7 +183,7 @@ try:
     doBreakShield = int(source[stage][70]) #破盾機率
     #96-1 = 95
     doBreakDevilShield = int(source[stage][95])#破惡魔盾機率
-
+    
 except:
     print("Not Exist Special Killer")
 
