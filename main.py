@@ -1,13 +1,16 @@
 import numpy as np
 import csv
 import Animation_Length as ani
+import MultiAttack_effect as ma
 ##--------Constant Define------
-uid = 5
+uid = 610
 #334 黑獸 size = 55, all larger than 55 have to have try protection
-#442 黑傑
+#442 黑傑 381 英傑
 #270 皇獸
+#530 白災 544黑災
 #319 白無垢 #381白傑
-stage = 2;  #0 = stage1, 1 = stage2, 2 = stage3
+#610 黑帝獸
+stage = 1;  #0 = stage1, 1 = stage2, 2 = stage3
 ##--------End Constant Define---
 ##POS
 if(uid<10):
@@ -127,11 +130,11 @@ try:
     ulwave_num= int(source[stage][89])
 except:
     print("This cat is older than 9.5, not exist ulwave-relate def")
-curse = 0
-curse2 = 0
+doCurse = 0
+doCurse2 = 0
 try:
-    curse = int(source[stage][92]) #詛咒機率
-    curse2 = int(source[stage][93]) #詛咒時長
+    doCurse = int(source[stage][92]) #詛咒機率
+    doCurse2 = int(source[stage][93]) #詛咒時長
 
 except:
     print("This cat is older than 9.8, not exist curse-relative def")
@@ -142,6 +145,7 @@ except:
     print("This cat is older than 10.1, not exist small-wave")
 
 #These not affect dmg or health
+doPush = int(source[stage][24]) #擊退
 doStop = int(source[stage][25])  #暫停
 doStop2 = int(source[stage][26]) #暫停時間
 doSlow = int(source[stage][27]) #緩速
@@ -150,6 +154,8 @@ doSelfIron = int(source[stage][43]) #鋼鐵屬性
 doLowAtk = int(source[stage][38]) #降攻%
 doLowAtk2 = int(source[stage][39])#降攻時間
 doLowAtk3 = int(source[stage][40])#降攻比例
+doReborn = int(source[stage][42]) #死前存活% #根性
+
 
 
 #Immunity
@@ -377,6 +383,7 @@ doCriEx2 = 0
 print(atk)
 atk = (1+(doCri/100)*(1+doCriEx2*(doCri/100)))*atk
 print(atk)
+print("攻擊力計入爆渾期望值，不計入波動/血量降增攻")
 if(not(doGoodAt==1 or doSuperDmg==1 or doUltraDmg==1)): #Check if need the Tempalte or not
     str1 = "Temp11"
 else:
@@ -499,6 +506,7 @@ doUltraHealth = 0
 doCriEx = 0
 doCriEx2 = 0
 SPAbility = ""
+SPAbility = SPAbility + ma.MultiAtk(doAtk1Aff,doAtk2Aff,doAtk3Aff,atk1,atk2,atk3)
 if(existColor):
     if(doGoodAt):   
         SPAbility = SPAbility + "對"+colortemplate+"屬性的敵人傷害傷害1.5倍(1.8倍)\n"
@@ -506,14 +514,41 @@ if(existColor):
     if(doSuperDmg):
         SPAbility = SPAbility + "對"+colortemplate+"屬性敵人造成3倍(4倍)傷害\n"
     if(doSuperHealth):
-        SPAbility = SPAbility + "受到"+colortemplate+"屬性敵人攻擊的傷害減至1/4(1/5)"
-
+        SPAbility = SPAbility + "受到"+colortemplate+"屬性敵人攻擊的傷害減至1/4(1/5)\n"
+    if(doUltraDmg):
+        SPAbility = SPAbility + "對"+colortemplate+"屬性敵人造成6倍(7倍)傷害\n"
+    if(doUltraHealth):
+        SPAbility = SPAbility + "受到"+colortemplate+"屬性敵人攻擊的傷害減至1/6(1/7)\n"
+    if(doSlow):
+        SPAbility = SPAbility + str(doSlow)+"%機率緩速"+colortemplate+"屬性的敵人"+str(round(doSlow2/30,2))+"秒("+str(round(doSlow2*1.2/30,2))+"秒)\n"
+    if(doPush):
+        SPAbility = SPAbility + str(doPush)+"%機率擊退"+colortemplate+"屬性的敵人\n"
+    if(doStop):
+        SPAbility = SPAbility + str(doStop)+"%機率暫停"+colortemplate+"屬性的敵人"+str(round(doStop2/30,2))+"秒("+str(round(doStop2*1.2/30,2))+"秒)\n"
+    if(doLowAtk):
+        SPAbility = SPAbility + str(doStop)+"%機率降低"+colortemplate+"屬性的敵人攻擊力"+str(doLowAtk3)+"% "+str(round(doStop2/30,2))+"秒("+str(round(doStop2*1.2/30,2))+"秒)\n"
+    if(doCurse):
+        SPAbility = SPAbility + str(doCurse) +"%機率詛咒"+colortemplate+"屬性的敵人"+str(round(doCurse2/30,2))+"秒("+str(round(doCurse2*1.2/30,2))+"秒)\n"
+if(arrange2!=0):
+    SPAbility = SPAbility + "遠方攻擊\n"
 if(doCri>0):
     SPAbility = SPAbility + str(doCri) + "%機率使出會心一擊\n"
 if(doCriEx>0):
     SPAbility = SPAbility + str(doCriEx) + "%機率使出"+str(doCriEx2)+"%渾身一擊\n"
-if(doSmallWave):
-    SPAbility = SPAbility + "小波動\n"
+
+if(ulwave):
+    SPAbility = SPAbility + str(ulwave) + "%機率放出Lv"+str(ulwave_num)+"烈波(出現位置"+str(ulwave_dist)+"~"+str(ulwave_dist+ulwave_range)+")\n"
+if(doWave):
+    if(doSmallWave):
+        SPAbility = SPAbility + str(doWave) + "%機率放出Lv"+str(doWave2)+"小波動\n"
+    else:
+        SPAbility = SPAbility + str(doWave) + "%機率放出Lv"+str(doWave2)+"波動\n"
+if(doPowerUp):
+    SPAbility = SPAbility + "血量"+str(doPowerUp)+"%以下攻擊力"+str(1+int(doPowerUp2/100))+"倍\n"
+if(doCastleDmg):
+    SPAbility = SPAbility + "善於攻城(4倍傷害)\n"
+if(doReborn):
+    SPAbility = SPAbility + str(doReborn)+"%機率以1血存活一次\n"
 if(doImWave):
     SPAbility = SPAbility + "波動無效\n"
 if(doStopWave):
@@ -537,7 +572,7 @@ if(isWitchKiller):
     SPAbility = SPAbility + "魔女殺手\n"
 if(isEvaKiller):
     SPAbility = SPAbility + "EVA殺手\n"
-
+print(SPAbility)
 raw = raw.replace("_AB1",SPAbility)
 f = open('out.txt', 'w',encoding="utf-8")
 f.write(raw)
