@@ -2,6 +2,7 @@ import numpy as np
 import csv
 import Animation_Length as ani
 import MultiAttack_effect as ma
+import sys
 ##--------Constant Define------
 uid = 610
 #334 黑獸 size = 55, all larger than 55 have to have try protection
@@ -12,6 +13,13 @@ uid = 610
 #610 黑帝獸
 stage = 1;  #0 = stage1, 1 = stage2, 2 = stage3
 ##--------End Constant Define---
+#Try load from argv to override uid and stage
+try:
+    uid = int(sys.argv[1])
+    stage = int(sys.argv[2])
+except:
+    print("Not exist extra param")
+
 ##POS
 if(uid<10):
     filename = 'Unit/unit00'+str(uid)+'.csv'
@@ -27,13 +35,12 @@ except:
     print("Animation infor not exist or failed")
 atk_allinf =  187 #frame.
 ##POS
-
 #open files.
 f = open('raw.txt', 'r',encoding="utf-8")
 
 raw = f.read()
 
-print(raw);
+#print(raw);
 f.close();
 
 #f = open(filename,'r',encoding="utf-8")
@@ -54,6 +61,9 @@ inter21 = int(source[stage][13]) #攻發1
 inter22 = 0
 inter23 = 0
 inter24 = inter21
+doAtk1Aff = 0
+doAtk2Aff = 0
+doAtk3Aff = 0
 try:
     atk2= int(source[stage][59])
     atk3= int(source[stage][60])
@@ -101,6 +111,7 @@ doGoodAt = int(source[stage][23])   #善於攻擊
 doSuperDmg = int(source[stage][30]) #超大傷害
 doSuperHealth = int(source[stage][29]) #很耐打
 doCastleDmg = int(source[stage][34]) #擅攻城
+doDoubleMoney = int(source[stage][32])#很多金錢
 doWave = int(source[stage][35]) #波動%
 doWave2 = int(source[stage][36])#波動段數
 doPowerUp = int(source[stage][40]) #體降升攻體力門檻%
@@ -194,7 +205,7 @@ except:
     print("Not Exist Special Killer")
 
 
-##-----------
+##--------------------------------------------
 #str.replace(old, new[, max])
 
 #Multiplier
@@ -474,13 +485,20 @@ str7 = str(arange)
 if(arrange2==0):
     str7 = str(arange)
 else:
-    str7 = "接觸點"+str(arange)+'\n'+"範圍"+str(arrange2)+"~"+str(arrange2+arrange3)
+    if(arrange3>=0):
+        str7 = "接觸點"+str(arange)+'\n'+"範圍"+str(arrange2)+"~"+str(arrange2+arrange3)
+    else:
+        str7 = "接觸點"+str(arange)+'\n'+"範圍"+str(arrange2+arrange3)+"~"+str(arrange2)
+        
 raw = raw.replace("_range",str7)
 raw = raw.replace("_speed",str(speed))
 raw = raw.replace("_KB",str(kb))
 str6 = ""
 if(arrange2!=0):
-    str6 = str6 + "遠方"
+    if(arrange3>=0):
+        str6 = str6 + "遠方"
+    else:
+        str6 = str6 + "全方"
 if(sing==0):
     str6 = str6 + "單體"
 else:
@@ -530,7 +548,10 @@ if(existColor):
     if(doCurse):
         SPAbility = SPAbility + str(doCurse) +"%機率詛咒"+colortemplate+"屬性的敵人"+str(round(doCurse2/30,2))+"秒("+str(round(doCurse2*1.2/30,2))+"秒)\n"
 if(arrange2!=0):
-    SPAbility = SPAbility + "遠方攻擊\n"
+    if(arrange3>=0):
+        SPAbility = SPAbility + "遠方攻擊\n"
+    else:
+        SPAbility = SPAbility + "全方位攻擊\n"
 if(doCri>0):
     SPAbility = SPAbility + str(doCri) + "%機率使出會心一擊\n"
 if(doCriEx>0):
@@ -547,6 +568,8 @@ if(doPowerUp):
     SPAbility = SPAbility + "血量"+str(doPowerUp)+"%以下攻擊力"+str(1+int(doPowerUp2/100))+"倍\n"
 if(doCastleDmg):
     SPAbility = SPAbility + "善於攻城(4倍傷害)\n"
+if(doDoubleMoney):
+    SPAbility = SPAbility + "擊倒敵人獲得兩倍金錢\n"
 if(doReborn):
     SPAbility = SPAbility + str(doReborn)+"%機率以1血存活一次\n"
 if(doImWave):
@@ -577,3 +600,4 @@ raw = raw.replace("_AB1",SPAbility)
 f = open('out.txt', 'w',encoding="utf-8")
 f.write(raw)
 f.close();
+print("Done!")
