@@ -4,7 +4,7 @@ import Animation_Length as ani
 import MultiAttack_effect as ma
 import sys
 ##--------Constant Define------
-uid = 610
+uid = 126
 #334 黑獸 size = 55, all larger than 55 have to have try protection
 #442 黑傑 381 英傑
 #270 皇獸
@@ -18,6 +18,10 @@ try:
     uid = int(sys.argv[1])
     stage = int(sys.argv[2])
 except:
+    print("Input UID:",end='')
+  #  uid = int(input())
+    print("Input Stage:",end='')
+  #  stage = int(input())
     print("Not exist extra param")
 
 ##POS
@@ -70,7 +74,7 @@ try:
     atk = atk1 + atk2 + atk3
     inter22 = int(source[stage][61])
     inter23 = int(source[stage][62])
-    inter24 = inter21+inter22+inter23
+    inter24 = max(inter21,inter22,inter23)
     doAtk1Aff = int(source[stage][63])#第一段攻擊是否有能力
     doAtk2Aff = int(source[stage][64])
     doAtk3Aff = int(source[stage][65])
@@ -111,7 +115,8 @@ doGoodAt = int(source[stage][23])   #善於攻擊
 doSuperDmg = int(source[stage][30]) #超大傷害
 doSuperHealth = int(source[stage][29]) #很耐打
 doCastleDmg = int(source[stage][34]) #擅攻城
-doDoubleMoney = int(source[stage][32])#很多金錢
+doOnlyAttack = int(source[stage][32]) #只能攻擊
+doDoubleMoney = int(source[stage][33])#很多金錢
 doWave = int(source[stage][35]) #波動%
 doWave2 = int(source[stage][36])#波動段數
 doPowerUp = int(source[stage][40]) #體降升攻體力門檻%
@@ -377,7 +382,11 @@ for i in range(0,7):
 #    inter24 = inter21
     #inter1 間隔
 atkfq = max(atk_anil+1,inter1*2+inter24-1)
-print("atkfq=")
+print("Atk Animation Length=",end='')
+print(atk_anil+1)
+print("Standard Analysis length=",end='')
+print(inter1*2+inter24-1)
+print("atkfq= ",end='')
 print(atkfq)
 atkfq = atkfq / 30
 print(atkfq)
@@ -545,6 +554,8 @@ if(existColor):
         SPAbility = SPAbility + str(doStop)+"%機率暫停"+colortemplate+"屬性的敵人"+str(round(doStop2/30,2))+"秒("+str(round(doStop2*1.2/30,2))+"秒)\n"
     if(doLowAtk):
         SPAbility = SPAbility + str(doStop)+"%機率降低"+colortemplate+"屬性的敵人攻擊力"+str(doLowAtk3)+"% "+str(round(doStop2/30,2))+"秒("+str(round(doStop2*1.2/30,2))+"秒)\n"
+    if(doOnlyAttack):
+        SPAbility = SPAbility + "只能攻擊"+colortemplate+"屬性的敵人\n"
     if(doCurse):
         SPAbility = SPAbility + str(doCurse) +"%機率詛咒"+colortemplate+"屬性的敵人"+str(round(doCurse2/30,2))+"秒("+str(round(doCurse2*1.2/30,2))+"秒)\n"
 if(arrange2!=0):
