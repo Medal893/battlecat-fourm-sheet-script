@@ -4,14 +4,14 @@ import Animation_Length as ani
 import MultiAttack_effect as ma
 import sys
 ##--------Constant Define------
-uid = 126
+uid = 284
 #334 黑獸 size = 55, all larger than 55 have to have try protection
 #442 黑傑 381 英傑
 #270 皇獸
 #530 白災 544黑災
 #319 白無垢 #381白傑
 #610 黑帝獸
-stage = 1;  #0 = stage1, 1 = stage2, 2 = stage3
+stage = 2;  #0 = stage1, 1 = stage2, 2 = stage3
 ##--------End Constant Define---
 #Try load from argv to override uid and stage
 try:
@@ -19,9 +19,9 @@ try:
     stage = int(sys.argv[2])
 except:
     print("Input UID:",end='')
-  #  uid = int(input())
+    uid = int(input())
     print("Input Stage:",end='')
-  #  stage = int(input())
+    stage = int(input())
     print("Not exist extra param")
 
 ##POS
@@ -167,9 +167,9 @@ doStop2 = int(source[stage][26]) #暫停時間
 doSlow = int(source[stage][27]) #緩速
 doSlow2 = int(source[stage][28]) #緩速時間
 doSelfIron = int(source[stage][43]) #鋼鐵屬性
-doLowAtk = int(source[stage][38]) #降攻%
-doLowAtk2 = int(source[stage][39])#降攻時間
-doLowAtk3 = int(source[stage][40])#降攻比例
+doLowAtk = int(source[stage][37]) #降攻%
+doLowAtk2 = int(source[stage][38])#降攻時間
+doLowAtk3 = int(source[stage][39])#降攻比例
 doReborn = int(source[stage][42]) #死前存活% #根性
 
 
@@ -231,8 +231,8 @@ if(existColor):
         stri = stri + "鐵"
     if(doAngel==1):
         stri = stri + "天"
-#    if(doU==1):
-#        stri = stri + "紅"
+    if(doAlien==1):
+        stri = stri + "星"
     if(doUnded==1):
         stri = stri + "屍"
     existColor_G = bool(doRed+doFloat+doBlack+doIron+doAngel+doUnded)
@@ -248,6 +248,7 @@ if(existColor):
     existColor_N = bool(doWhite+doAncient+doDevil)
     if(existColor_N):
         stri = stri + "Temp13\n"
+    print("Template:")
     print(stri)
 
 
@@ -367,7 +368,7 @@ for i in range(0,7):
         if(existColor_N):
             ansval = int(round(hp*cst*4)/kb)
             str2 = str2.replace("Temp13",str(ansval))
-    if(doSuperHealth):
+    if(doUltraHealth):
         if(existColor_G):
             ansval = int(round(hp*cst*7)/kb)
             str2 = str2.replace("Temp12",str(ansval))
@@ -401,7 +402,9 @@ doCriEx = 0
 doCriEx2 = 0
 '''
 print(atk)
-atk = (1+(doCri/100)*(1+doCriEx2*(doCri/100)))*atk
+atk = (1+(doCri/100))*(1+(doCriEx2/100)*(doCriEx/100))*atk
+print("CriEX:")
+
 print(atk)
 print("攻擊力計入爆渾期望值，不計入波動/血量降增攻")
 if(not(doGoodAt==1 or doSuperDmg==1 or doUltraDmg==1)): #Check if need the Tempalte or not
@@ -527,11 +530,6 @@ colortemplate = colortemplate.replace('Temp12','')
 colortemplate = colortemplate.replace('Temp13','')
 colortemplate = colortemplate.replace('\n','')
 print(colortemplate)
-doCri = int(source[stage][31]) #爆擊%
-doUltraDmg = 0
-doUltraHealth = 0
-doCriEx = 0
-doCriEx2 = 0
 SPAbility = ""
 SPAbility = SPAbility + ma.MultiAtk(doAtk1Aff,doAtk2Aff,doAtk3Aff,atk1,atk2,atk3)
 if(existColor):
@@ -553,7 +551,7 @@ if(existColor):
     if(doStop):
         SPAbility = SPAbility + str(doStop)+"%機率暫停"+colortemplate+"屬性的敵人"+str(round(doStop2/30,2))+"秒("+str(round(doStop2*1.2/30,2))+"秒)\n"
     if(doLowAtk):
-        SPAbility = SPAbility + str(doStop)+"%機率降低"+colortemplate+"屬性的敵人攻擊力"+str(doLowAtk3)+"% "+str(round(doStop2/30,2))+"秒("+str(round(doStop2*1.2/30,2))+"秒)\n"
+        SPAbility = SPAbility + str(doLowAtk)+"%機率降低"+colortemplate+"屬性的敵人攻擊力"+str(doLowAtk3)+"% "+str(round(doLowAtk2/30,2))+"秒("+str(round(doLowAtk2*1.2/30,2))+"秒)\n"
     if(doOnlyAttack):
         SPAbility = SPAbility + "只能攻擊"+colortemplate+"屬性的敵人\n"
     if(doCurse):
@@ -576,7 +574,7 @@ if(doWave):
     else:
         SPAbility = SPAbility + str(doWave) + "%機率放出Lv"+str(doWave2)+"波動\n"
 if(doPowerUp):
-    SPAbility = SPAbility + "血量"+str(doPowerUp)+"%以下攻擊力"+str(1+int(doPowerUp2/100))+"倍\n"
+    SPAbility = SPAbility + "血量"+str(doPowerUp)+"%以下攻擊力"+str(round(1+doPowerUp2/100,2))+"倍\n"
 if(doCastleDmg):
     SPAbility = SPAbility + "善於攻城(4倍傷害)\n"
 if(doDoubleMoney):
