@@ -4,7 +4,7 @@ import Animation_Length as ani
 import MultiAttack_effect as ma
 import sys
 ##--------Constant Define------
-uid = 284
+uid = 339
 #334 黑獸 size = 55, all larger than 55 have to have try protection
 #442 黑傑 381 英傑
 #270 皇獸
@@ -314,10 +314,10 @@ for i in range(0,7):
     str2 = str2.replace("Temp11", str(int(hp*cst)))
     if(doGoodAt):
         if(existColor_G):
-            ansval = int(round(hp*cst*(1/0.5)))
+            ansval = int(round(hp*cst*(1/0.4)))
             str2 = str2.replace("Temp12",str(ansval))
         if(existColor_N):
-            ansval = int(round(hp*cst*(1/0.4)))
+            ansval = int(round(hp*cst*(1/0.5)))
             str2 = str2.replace("Temp13",str(ansval))
     if(doSuperHealth):
         if(existColor_G):
@@ -356,10 +356,10 @@ for i in range(0,7):
     str2 = str2.replace("Temp11", str(int(hp*cst/kb)))
     if(doGoodAt):
         if(existColor_G):
-            ansval = int(round(hp*cst*(1/0.5)/kb))
+            ansval = int(round(hp*cst*(1/0.4)/kb))
             str2 = str2.replace("Temp12",str(ansval))
         if(existColor_N):
-            ansval = int(round(hp*cst*(1/0.4)/kb))
+            ansval = int(round(hp*cst*(1/0.5)/kb))
             str2 = str2.replace("Temp13",str(ansval))
     if(doSuperHealth):
         if(existColor_G):
