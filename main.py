@@ -4,7 +4,7 @@ import Animation_Length as ani
 import MultiAttack_effect as ma
 import sys
 ##--------Constant Define------
-uid = 339
+uid = 136
 #334 黑獸 size = 55, all larger than 55 have to have try protection
 #442 黑傑 381 英傑
 #270 皇獸
@@ -48,7 +48,18 @@ raw = f.read()
 f.close();
 
 #f = open(filename,'r',encoding="utf-8")
-source=np.loadtxt(filename,dtype=np.str,delimiter=',',encoding="utf-8")
+#try open directly with np.loadtxt
+try:
+    source=np.loadtxt(filename,dtype=str,delimiter=',',encoding="utf-8")
+except:
+    print("Exist error with tradition Numpy open method, used compatible method to open")
+    #use compatible mode for some special case like uid136.
+    with open(filename,encoding="utf-8") as f:
+        z0 = f.read().split('\n')
+        z1 = z0[0].split(',')
+        z2 = z0[1].split(',')
+        z3 = z0[2].split(',')
+        source = [z1,z2,z3]
 print(source)
 #txt = f.read()
 #end files.
@@ -235,7 +246,7 @@ if(existColor):
         stri = stri + "星"
     if(doUnded==1):
         stri = stri + "屍"
-    existColor_G = bool(doRed+doFloat+doBlack+doIron+doAngel+doUnded)
+    existColor_G = bool(doRed+doFloat+doBlack+doIron+doAngel+doUnded+doAlien)
     if(existColor_G):
         stri = stri + "Temp12\n"
         
@@ -487,10 +498,10 @@ try:
 except:
     print("No MultiAttack")
 
-str4 = str4 + "秒"
+str4 = str4 + " 秒/下"
 raw = raw.replace("_fq2",str4) #出招時間
 
-raw = raw.replace("_fq1",str(round(atkfq,2))) #攻擊頻率
+raw = raw.replace("_fq1",str(round(atkfq,2))+" 秒/下") #攻擊頻率
 raw = raw.replace("_fq4",str(round((regen*2-254)/30,2))) #再生產
 
 str7 = str(arange)
@@ -505,6 +516,9 @@ else:
 raw = raw.replace("_range",str7)
 raw = raw.replace("_speed",str(speed))
 raw = raw.replace("_KB",str(kb))
+raw = raw.replace("_fq3",(str(round(inter1/30,2))+"秒"))
+atkleft = int(atkfq*30) -max(inter21,inter22,inter23)-inter1;
+raw = raw.replace("_fq5",(str(round(atkleft/30,2))+"秒" ))
 str6 = ""
 if(arrange2!=0):
     if(arrange3>=0):
@@ -564,7 +578,7 @@ if(arrange2!=0):
 if(doCri>0):
     SPAbility = SPAbility + str(doCri) + "%機率使出會心一擊\n"
 if(doCriEx>0):
-    SPAbility = SPAbility + str(doCriEx) + "%機率使出"+str(doCriEx2)+"%渾身一擊\n"
+    SPAbility = SPAbility + str(doCriEx) + "%機率使出"+str(doCriEx2+100)+"%渾身一擊\n"
 
 if(ulwave):
     SPAbility = SPAbility + str(ulwave) + "%機率放出Lv"+str(ulwave_num)+"烈波(出現位置"+str(ulwave_dist)+"~"+str(ulwave_dist+ulwave_range)+")\n"
