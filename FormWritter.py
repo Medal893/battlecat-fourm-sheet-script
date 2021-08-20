@@ -134,7 +134,7 @@ def FormWritter(config,uid,stage):
     except:
         print("This cat is older than 7.0, not exist ancient")
         
-    if(doRed+doFloat+doBlack+doIron+doWhite+doAngel+doAlien+doUnded>0):
+    if(doRed+doFloat+doBlack+doIron+doWhite+doAngel+doAlien+doUnded+doAncient+doDevil>0):
         existColor = True;
     #Ability Calculation
     doGoodAt = int(source[stage][23])   #善於攻擊
@@ -157,6 +157,8 @@ def FormWritter(config,uid,stage):
         doUltraHealth = int(source[stage][80]) #極度耐打 #UR
         doCriEx = int(source[stage][82]) #渾身機率
         doCriEx2 = int(source[stage][83])#渾身倍率
+        doImAtk = int(source[stage][84]) #攻擊無效%
+        doImAtk2 = int(source[stage][85]) #攻擊無效F
         atk = atk
         
     except:
@@ -235,6 +237,12 @@ def FormWritter(config,uid,stage):
     except:
         print("Not Exist Special Killer")
 
+    try:
+        SPDeathAni = int(source[stage][67])
+        doImUlwave = int(source[stage][91])
+    except:
+        print("exist no death animation")
+        
 
     ##--------------------------------------------
     #str.replace(old, new[, max])
@@ -587,6 +595,8 @@ def FormWritter(config,uid,stage):
             SPAbility = SPAbility + "只能攻擊"+colortemplate+"屬性的敵人\n"
         if(doCurse):
             SPAbility = SPAbility + str(doCurse) +"%機率詛咒"+colortemplate+"屬性的敵人"+str(round(doCurse2/30,2))+"秒("+str(round(doCurse2*1.2/30,2))+"秒)\n"
+        if(doImAtk):
+            SPAbility = SPAbility + "受到"+colortemplate+"屬性敵人的攻擊時"+str(doImAtk)+"%機率發動攻擊無效"+str(round(doImAtk2/30,1))+"秒("+str(round(doImAtk2*1.2/30,1))+"秒)\n"
     if(arrange2!=0):
         if(arrange3>=0):
             SPAbility = SPAbility + "遠方攻擊\n"
