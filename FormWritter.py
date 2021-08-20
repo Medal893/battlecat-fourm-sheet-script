@@ -152,6 +152,8 @@ def FormWritter(config,uid,stage):
     doUltraHealth = 0
     doCriEx = 0
     doCriEx2 = 0
+    doImAtk = 0
+    doImAtk2 = 0
     try:
         doUltraDmg = int(source[stage][81]) #極度傷害 #UR
         doUltraHealth = int(source[stage][80]) #極度耐打 #UR
@@ -236,10 +238,14 @@ def FormWritter(config,uid,stage):
         
     except:
         print("Not Exist Special Killer")
-
+    SPDeathAni = 0
+    doImUlwave = 0
+    doImPoison = 0
     try:
         SPDeathAni = int(source[stage][67])
+        doImPoison = int(source[stage][90])
         doImUlwave = int(source[stage][91])
+        
     except:
         print("exist no death animation")
         
@@ -416,15 +422,16 @@ def FormWritter(config,uid,stage):
     #4 dps
     #    inter24 = inter21
         #inter1 間隔
-    atkfq = max(atk_anil+1,inter1*2+inter24-1)
+    atk_anil = atk_anil+1 #將動畫長度永久+1(從0/從1開始)
+    atkfq = max(atk_anil,inter1*2+inter24-1)
     print("Atk Animation Length=",end='')
-    print(atk_anil+1)
+    print(atk_anil)
     print("Standard Analysis length=",end='')
     print(inter1*2+inter24-1)
     print("atkfq= ",end='')
     print(atkfq)
-    atkfq = atkfq / 30
-    print(atkfq)
+#    atkfq = atkfq / 30
+#    print(atkfq)
     rdpoint = 0
     ansval = 1.0
     #Here is the final pos where used variation atk, calculate the expectation of dmg
@@ -437,9 +444,9 @@ def FormWritter(config,uid,stage):
     '''
     print(atk)
     atk = (1+(doCri/100))*(1+(doCriEx2/100)*(doCriEx/100))*atk
-    print("CriEX:")
-
+    print("加權後攻擊力:")
     print(atk)
+    print(atk_anil)
     print("攻擊力計入爆渾期望值，不計入波動/血量降增攻")
     if(not(doGoodAt==1 or doSuperDmg==1 or doUltraDmg==1)): #Check if need the Tempalte or not
         str1 = "Temp11"
@@ -459,48 +466,48 @@ def FormWritter(config,uid,stage):
     #    print(doSuperDmg)
       #  print(str2)
         if not rdpoint:
-            ansval = int(round(atk*cst/atkfq,rdpoint))
+            ansval = int(round(atk*cst*30/atkfq,rdpoint))
         else:
-            ansval = round(atk*cst/atkfq,rdpoint)
+            ansval = round(atk*cst*30/atkfq,rdpoint)
         str2 = str2.replace("Temp11", str(ansval))
         if(doGoodAt):
             if(existColor_G):
                 if not rdpoint:
-                    ansval = int(round(atk*cst*1.8/atkfq,rdpoint))
+                    ansval = int(round(atk*cst*1.8*30/atkfq,rdpoint))
                 else:
-                    ansval = round(atk*cst*1.8/atkfq,rdpoint)
+                    ansval = round(atk*cst*1.8*30/atkfq,rdpoint)
                 str2 = str2.replace("Temp12", str(ansval))
             if(existColor_N):
                 if not rdpoint:
-                    ansval = int(round(atk*cst*1.5/atkfq,rdpoint))
+                    ansval = int(round(atk*cst*1.5*30/atkfq,rdpoint))
                 else:
-                    ansval = round(atk*cst*1.5/atkfq,rdpoint)
+                    ansval = round(atk*cst*1.5*30/atkfq,rdpoint)
                 str2 = str2.replace("Temp13", str(ansval))
         if(doSuperDmg):
             if(existColor_G):
                 if not rdpoint:
-                    ansval = int(round(atk*cst*4/atkfq,rdpoint))
+                    ansval = int(round(atk*cst*4*30/atkfq,rdpoint))
                 else:
-                    ansval = round(atk*cst*4/atkfq,rdpoint)
+                    ansval = round(atk*cst*4*30/atkfq,rdpoint)
                 str2 = str2.replace("Temp12", str(ansval))
             if(existColor_N):   
                 if not rdpoint:
-                    ansval = int(round(atk*cst*3/atkfq,rdpoint))
+                    ansval = int(round(atk*cst*3*30/atkfq,rdpoint))
                 else:
-                    ansval = round(atk*cst*3/atkfq,rdpoint)
+                    ansval = round(atk*cst*3*30/atkfq,rdpoint)
                 str2 = str2.replace("Temp13", str(ansval))
         if(doUltraDmg):
             if(existColor_G):
                 if not rdpoint:
-                    ansval = int(round(atk*cst*6/atkfq,rdpoint))
+                    ansval = int(round(atk*cst*6*30/atkfq,rdpoint))
                 else:
-                    ansval = round(atk*cst*4/atkfq,rdpoint)
+                    ansval = round(atk*cst*4*30/atkfq,rdpoint)
                 str2 = str2.replace("Temp12", str(ansval))
             if(existColor_N):   
                 if not rdpoint:
-                    ansval = int(round(atk*cst*5/atkfq,rdpoint))
+                    ansval = int(round(atk*cst*5*30/atkfq,rdpoint))
                 else:
-                    ansval = round(atk*cst*3/atkfq,rdpoint)
+                    ansval = round(atk*cst*3*30/atkfq,rdpoint)
                 str2 = str2.replace("Temp13", str(ansval))
 
       #  print(str2)
@@ -524,7 +531,7 @@ def FormWritter(config,uid,stage):
     str4 = str4 + " 秒"
     raw = raw.replace("_fq2",str4) #出招時間
 
-    raw = raw.replace("_fq1",str(round(atkfq,2))+" 秒/下") #攻擊頻率
+    raw = raw.replace("_fq1",str(round(atkfq/30,2))+" 秒/下") #攻擊頻率
     raw = raw.replace("_fq4",str(round((regen*2-254)/30,2))) #再生產
 
     str7 = str(arange)
@@ -539,11 +546,14 @@ def FormWritter(config,uid,stage):
     raw = raw.replace("_range",str7)
     raw = raw.replace("_speed",str(speed))
     raw = raw.replace("_KB",str(kb))
-    raw = raw.replace("_fq3",(str(round(inter1/30,2))+"秒"))
-    atkleft = int(atkfq*30) -max(inter21,inter22,inter23)-inter1;
+    atk_inter = round((atkfq-atk_anil)/30,2)
+    print("間隔: "+str(atk_inter))
+    raw = raw.replace("_fq3",(str(atk_inter)+"秒"))  #間隔
+    atkleft = atk_anil - inter24  #收招
     if(atkleft<0):
         print("Error on _fq5's calculation, if make sure it's completely exist cat uid and stage, please report")
     raw = raw.replace("_fq5",(str(round(atkleft/30,2))+"秒" ))
+    print("收招:"+str(atkleft))
     str6 = ""
     if(arrange2!=0):
         if(arrange3>=0):
@@ -626,6 +636,10 @@ def FormWritter(config,uid,stage):
         SPAbility = SPAbility + "波動無效\n"
     if(doStopWave):
         SPAbility = SPAbility + "波動滅止\n"
+    if(doImUlwave):
+        SPAbility = SPAbility + "烈波無效\n"
+    if(doImPoison):
+        SPAbility = SPAbility + "毒擊無效\n"
     if(doImPush):
         SPAbility = SPAbility + "擊退無效\n"
     if(doImStop):
@@ -638,7 +652,6 @@ def FormWritter(config,uid,stage):
         SPAbility = SPAbility + "傳送無效\n"
     if(doImCurse):
         SPAbility = SPAbility + "詛咒無效\n"
-
     if(isZombieKiller):
         SPAbility = SPAbility + "殭屍殺手\n"
     if(isWitchKiller):
@@ -646,6 +659,11 @@ def FormWritter(config,uid,stage):
     if(isEvaKiller):
         SPAbility = SPAbility + "EVA殺手\n"
     print(SPAbility)
+    if(config['DEFAULT']['withimage']=='1'):
+        import imgdrawer
+        SPAbility=imgdrawer.imgdrawer(SPAbility,colortemplate,config)
+    print(SPAbility)
+
     raw = raw.replace("_AB1",SPAbility)
     dynname = int(config['DEFAULT']['UIDSaveFileName'])
     savefilename = 'out.txt'
@@ -654,11 +672,9 @@ def FormWritter(config,uid,stage):
     else:
         savefilename = str(uid)+"_"+str(stage)+'.txt'
 
+
     f = open(savefilename, 'w',encoding="utf-8")
     f.write(raw)
     f.close();
-    if(config['DEFAULT']['withimage']=='1'):
-        import imgdrawer
-        imgdrawer(savefilename)
     print("Done!")
     return 'true'
