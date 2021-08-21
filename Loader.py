@@ -11,14 +11,36 @@ except:
     print("exist no valid config, rebuilding one")
     config=configparser.ConfigParser()
     config['DEFAULT'] = {'continueExecution': '0',
-                         'defaultuid': '601',
-                         'defaultstage': '0',
+                         'defaultuid': '383',
+                         'defaultstage': '2',
+                         'defaultmode' : '1',
                          'activeUIDAsk': '1',
                          'activeStageAsk': '1',
+                         'activeModeAsk': '0',
                          'withimage': '0',
                          'UIDSaveFileName': '0',
                          'DefaultOutputFileName':'out.txt'
                          }
+    config['LEVEL'] = {'mode1'  : '10,20,30,40,50', #Default Mode
+                       'mode2'  : '30,50,70,90,130', #Default for R
+                       'mode3'  : '30,40,50,60,70',  #Default for SR
+                       'mode4'  : '30,40,45,50,60', #Default for SSR.
+                       'mode5'  : '10,20,25,30,40', #Default for 巴哈姆特
+                       'mode6'  : '10,20,30,40,50', #Default for 狂亂
+                       'mode7'  : '10,20,30,40,50',
+                       'mode8'  : '10,20,30,40,50',
+                       'mode9'  : '10,20,30,40,50',
+                       'mode1rd': ' -1,-1,-1,-1,-1', #不減益遞減
+                       'mode2rd': ' 70,90,130,-1,-1',
+                       'mode3rd': ' 60,80,100,-1,-1',
+                       'mode4rd': ' 60,80,100,-1,-1',
+                       'mode5rd': ' 35,-1,-1,-1,-1',
+                       'mode6rd': ' 20,-1,-1,-1,-1',
+                       'mode7rd': ' -1,-1,-1,-1,-1',
+                       'mode8rd': ' -1,-1,-1,-1,-1',
+                       'mode9rd': ' -1,-1,-1,-1,-1'
+                       
+                       }
     config['IMAGE'] = {'doRed'  : '[img=https://i.imgur.com/HagkEhI.png]',
                        'doFloat': '[img=https://i.imgur.com/XmW79pT.png]',
                        'doBlack': '[img=https://i.imgur.com/zUqTa3f.png]',
@@ -28,7 +50,7 @@ except:
                        'doAlien': '[img=https://i.imgur.com/yF6Pkql.png]',
                        'doUnded': '[img=https://i.imgur.com/cx7Tn5F.png]',
                        'doAncient':'[img=https://i.imgur.com/OU1J4wV.png]',
-                       'doDevil': '[img=https://i.imgur.com/7leUuJl.jpg]',
+                       'doDevil': '[img=https://i.imgur.com/7leUuJl.jpg?2]',
                        'isZombieKiller': '[img=https://i.imgur.com/0ojGu6X.png]',
                        'isEvaKiller':   '[img=https://i.imgur.com/oBKserF.png]',
                        'isWitchKiller':  '[img=https://i.imgur.com/beOdZ0A.png]',
@@ -73,8 +95,9 @@ except:
                        'doSuperHealth':  '[img=https://i.imgur.com/uEikACY.png]',
                        'doImCurse'   :   '[img=https://i.imgur.com/UXB5MVe.png]',
                        'doImTeleport' :  '[img=https://i.imgur.com/MDoxflp.png]',
-                       'doSmallWave' :   '[img=https://i.imgur.com/VUUrEOI.jpg]',
-  
+                       'doSmallWave' :   '[img=https://i.imgur.com/VUUrEOI.jpg?1]',
+                       'doBreakDevilShiled': '[img=https://i.imgur.com/ZzW9bow.png]',
+                        
                        'hpUP'     : '[img=https://i.imgur.com/DVhmvJt.png]',
                        'atkUP'    : '[img=https://i.imgur.com/fmIp54Z.png]',
                        'KBUP'     : '[img=https://i.imgur.com/7ZEMrqe.png]',
