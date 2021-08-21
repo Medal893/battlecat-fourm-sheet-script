@@ -68,27 +68,42 @@ def imgdrawer(SPAbility,colortemplate,config):
         
     trypos = SPAbility.find('%機率緩速')
     if(trypos!=-1):
-        trypos = SPAbility.find('\n',trypos-10)+1
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1  
         SPAbility = inserter(SPAbility,trypos,'doSlow',config)
         
     trypos = SPAbility.find('%機率擊退')
     if(trypos!=-1):
-        trypos = SPAbility.find('\n',trypos-10)+1
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1  
         SPAbility = inserter(SPAbility,trypos,'doPush',config)
         
     trypos = SPAbility.find('%機率暫停')
     if(trypos!=-1):
-        trypos = SPAbility.find('\n',trypos-10)+1
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1  
         SPAbility = inserter(SPAbility,trypos,'doStop',config)
         
     trypos = SPAbility.find('%機率降低')
     if(trypos!=-1):
-        trypos = SPAbility.find('\n',trypos-10)+1
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1  
         SPAbility = inserter(SPAbility,trypos,'doLowAtk',config)
 
     trypos = SPAbility.find('%機率詛咒')
     if(trypos!=-1):
-        trypos = SPAbility.find('\n',trypos-5)+1
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1  
         SPAbility = inserter(SPAbility,trypos,'curse',config)
 
     trypos = SPAbility.find('%機率發動攻擊無效')
@@ -98,13 +113,19 @@ def imgdrawer(SPAbility,colortemplate,config):
 
     trypos = SPAbility.find('%機率使出會心一擊')
     if(trypos!=-1):
-        trypos = SPAbility.find('\n',trypos-40)+1  
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1   
         SPAbility = inserter(SPAbility,trypos,'doCri',config)
 
     trypos = SPAbility.find('渾身一擊')
     if(trypos!=-1):
-        trypos = SPAbility.find('%機率使出',trypos-14)  
-        trypos = SPAbility.find('\n',trypos-10)+1  
+        trypos = SPAbility.find('%機率使出',trypos-14)
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1  
         SPAbility = inserter(SPAbility,trypos,'doCriEx',config)
 
     trypos = SPAbility.find('%機率放出Lv')
@@ -112,16 +133,41 @@ def imgdrawer(SPAbility,colortemplate,config):
         trypos3 = -1
         trypos2 = SPAbility.find('烈波(出現位置',trypos)
         if(trypos2!=-1):
-            trypos3=SPAbility.find('\n',trypos-10)+1
+            trypos3 = trypos-5
+            if(trypos3<0):
+                trypos3 = 0
+            trypos = SPAbility.find('\n',trypos3)+1  
             SPAbility = inserter(SPAbility,trypos,'ulwave',config)
-        trypos2 = SPAbility.find('小波動',trypos)
-        if(trypos2!=-1):
-            trypos3=SPAbility.find('\n',trypos-10)+1
-            SPAbility = inserter(SPAbility,trypos,'doOSmallWave',config)
         else:
-            trypos3=SPAbility.find('\n',trypos-10)+1
-            SPAbility = inserter(SPAbility,trypos,'doWave',config)
+            trypos2 = SPAbility.find('小波動',trypos)
+            if(trypos2!=-1):
+                trypos = trypos-10
+                if(trypos<0):
+                    trypos = 0
+                trypos3=SPAbility.find('\n',trypos)+1
+                SPAbility = inserter(SPAbility,trypos3,'doOSmallWave',config)
+            else:
+                trypos = trypos-10
+                if(trypos<0):
+                    trypos=0
+                trypos3=SPAbility.find('\n',trypos)+1
+                SPAbility = inserter(SPAbility,trypos3,'doWave',config)
+    trypos = SPAbility.find('以1血存活一次')
+    if(trypos!=-1):
+        trypos = SPAbility.find('\n',trypos-10)+1
+        SPAbility = inserter(SPAbility,trypos,'doReborn',config)
+
+    trypos = SPAbility.find('回連續攻擊')
+    if(trypos!=-1):
+        trypos = trypos-5
+        if(trypos<0):
+            trypos = 0
+        trypos = SPAbility.find('\n',trypos)+1   
+        SPAbility = inserter(SPAbility,trypos,'contiatk',config)
         
+    trypos = SPAbility.find('一回攻擊')
+    if(trypos!=-1):
+        SPAbility = inserter(SPAbility,trypos,'empty',config)
     trypos = SPAbility.find('只能攻擊')
     if(trypos!=-1):
         SPAbility = inserter(SPAbility,trypos,'doOnlyAttack',config)
