@@ -629,7 +629,10 @@ def FormWritter(config,uid,stage):
     raw = raw.replace("_fq2",str4) #出招時間
 
     raw = raw.replace("_fq1",str(round(atkfq/30,2))+" 秒/下") #攻擊頻率
-    raw = raw.replace("_fq4",str(round((regen*2-254)/30,2))) #再生產
+    realregen = regen*2-254
+    if(realregen<=60):
+        realregen = 60        
+    raw = raw.replace("_fq4",str(round(realregen/30,2))) #再生產
 
     str7 = str(arange)
     if(arrange2==0):
@@ -715,6 +718,8 @@ def FormWritter(config,uid,stage):
         SPAbility = SPAbility + str(doCriEx) + "%機率使出"+str(doCriEx2+100)+"%渾身一擊\n"
     if(doAtkTime==1):
         SPAbility = SPAbility + "一回攻擊\n"
+    if(inter1==0):
+        SPAbility = SPAbility + "擊退反擊\n"
     if(ulwave):
         SPAbility = SPAbility + str(ulwave) + "%機率放出Lv"+str(ulwave_num)+"烈波(出現位置"+str(int(ulwave_dist/4))+"~"+str(int((ulwave_dist+ulwave_range)/4))+")\n"
     if(doWave):
