@@ -141,13 +141,13 @@ def imgdrawer(SPAbility,colortemplate,config):
         else:
             trypos2 = SPAbility.find('小波動',trypos)
             if(trypos2!=-1):
-                trypos = trypos-10
+                trypos = trypos-5
                 if(trypos<0):
                     trypos = 0
                 trypos3=SPAbility.find('\n',trypos)+1
                 SPAbility = inserter(SPAbility,trypos3,'doOSmallWave',config)
             else:
-                trypos = trypos-10
+                trypos = trypos-5
                 if(trypos<0):
                     trypos=0
                 trypos3=SPAbility.find('\n',trypos)+1

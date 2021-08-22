@@ -89,7 +89,7 @@ def FormWritter(config,uid,stage):
     intlld.append(int(lld[2]))
     intlld.append(int(lld[3]))
     intlld.append(int(lld[4]))
-    print(intlld)
+#    print(intlld)
     lld = [1] #slot one didn't use
     for i in range(1, maxlevel+2):
         if i<= intlld[0]:
@@ -104,7 +104,7 @@ def FormWritter(config,uid,stage):
             lld.append(16)
         else:
             lld.append(1)
-    print(lld)
+#    print(lld)
     #Create new table of lld
 #raw = raw.replace(tempstr,str2)
     lc = []     #levelconst
@@ -227,8 +227,7 @@ def FormWritter(config,uid,stage):
         doDevil=   int(source[stage][96])
     except:
         print("This cat is older than 7.0, not exist ancient")
-    print("doDevil?")
-    print(doDevil)
+
     if(doRed+doFloat+doBlack+doIron+doWhite+doAngel+doAlien+doUnded+doAncient+doDevil>0):
         existColor = True;
     #Ability Calculation
