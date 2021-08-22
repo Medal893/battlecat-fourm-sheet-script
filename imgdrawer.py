@@ -168,6 +168,9 @@ def imgdrawer(SPAbility,colortemplate,config):
     trypos = SPAbility.find('一回攻擊')
     if(trypos!=-1):
         SPAbility = inserter(SPAbility,trypos,'empty',config)
+    trypos = SPAbility.find('擊退反擊')
+    if(trypos!=-1):
+        SPAbility = inserter(SPAbility,trypos,'nointer',config)
     trypos = SPAbility.find('只能攻擊')
     if(trypos!=-1):
         SPAbility = inserter(SPAbility,trypos,'doOnlyAttack',config)
