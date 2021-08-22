@@ -12,13 +12,20 @@
 #Try load from argv to override uid and stage
 
 def FormWritter(config,uid,stage):
-    defaultstage = config['DEFAULT']['defaultstage']
+#    defaultstage = config['DEFAULT']['defaultstage']
     activeUIDAsk = int(config['DEFAULT']['activeUIDAsk'])
     activeStageAsk = int(config['DEFAULT']['activeStageAsk'])
+    activeModeAsk = int(config['DEFAULT']['activeModeAsk'])
+
     uid = int(config['DEFAULT']['defaultuid'])
     stage = int(config['DEFAULT']['defaultstage'])
+    mode = config['DEFAULT']['defaultmode']
+
     withimage = config['DEFAULT']['withimage']
-    
+    maxlevel = int(config['CONST']['maxlevel'])
+    instinctatk = float(config['CONST']['instinctatk']) + 1
+    instincthp = float(config['CONST']['instincthp']) + 1
+
     import configparser
     import numpy as np
     import csv
@@ -37,7 +44,10 @@ def FormWritter(config,uid,stage):
         if(activeStageAsk):
             print("Input Stage:",end='')
             stage = int(input())
-        print("Not exist extra param")
+        if(activeModeAsk):
+            print("Input Mode:",end='')
+            mode = int(input())
+#        print("Not exist extra param")
 
     ##POS
     if(uid<10):
@@ -62,6 +72,90 @@ def FormWritter(config,uid,stage):
     #print(raw);
     f.close();
 
+    #Solve Level Problem
+
+    loadlevelmode = config['LEVEL']["mode"+str(mode)]
+    loadleveldecreate = config['LEVEL']["mode"+str(mode)+"rd"]
+    llm = loadlevelmode.split(',')
+    lld = loadleveldecreate.split(',')
+    print(llm)
+    print(lld)
+    intlld = []
+    for i in range(0,5):
+        if lld[i]=='-1':
+            lld[i] = str(maxlevel*2)
+    intlld.append(int(lld[0]))
+    intlld.append(int(lld[1]))
+    intlld.append(int(lld[2]))
+    intlld.append(int(lld[3]))
+    intlld.append(int(lld[4]))
+    print(intlld)
+    lld = [1] #slot one didn't use
+    for i in range(1, maxlevel+2):
+        if i<= intlld[0]:
+            lld.append(1)
+        elif i <= intlld[1]:
+            lld.append(2)
+        elif i <= intlld[2]:
+            lld.append(4)
+        elif i <= intlld[3]:
+            lld.append(8)
+        elif i <= intlld[4]:
+            lld.append(16)
+        else:
+            lld.append(1)
+    print(lld)
+    #Create new table of lld
+#raw = raw.replace(tempstr,str2)
+    lc = []     #levelconst
+    
+    cal1 = int(llm[0])
+    cal2 = "Lv"+str(cal1)
+    raw = raw.replace('_lv1',cal2)
+    ssum = 0
+    for i in range(1,cal1+1):
+        ssum = ssum + (1/lld[i])
+    ssum = (4+ssum)/2
+    lc.append(ssum)
+
+    cal1 = int(llm[1])
+    cal2 = "Lv"+str(cal1)
+    raw = raw.replace('_lv2',cal2)
+    ssum = 0
+    for i in range(1,cal1+1):
+        ssum = ssum + (1/lld[i])
+    ssum = (4+ssum)/2
+    lc.append(ssum)
+
+    cal1 = int(llm[2])
+    cal2 = "Lv"+str(cal1)
+    ssum = 0
+    for i in range(1,cal1+1):
+        ssum = ssum + (1/lld[i])
+    raw = raw.replace('_lv3',cal2)
+    ssum = (4+ssum)/2
+    lc.append(ssum)
+
+    cal1 = int(llm[3])
+    cal2 = "Lv"+str(cal1)
+    ssum = 0
+    for i in range(1,cal1+1):
+        ssum = ssum + (1/lld[i])
+    raw = raw.replace('_lv4',cal2)
+    ssum = (4+ssum)/2
+    lc.append(ssum)
+
+    cal1 = int(llm[4])
+    cal2 = "Lv"+str(cal1)
+    ssum = 0
+    for i in range(1,cal1+1):
+        ssum = ssum + (1/lld[i])
+    raw = raw.replace('_lv5',cal2)
+    ssum = (4+ssum)/2
+    lc.append(ssum)
+
+    print(lc)
+    
     #f = open(filename,'r',encoding="utf-8")
     #try open directly with np.loadtxt
     try:
@@ -133,7 +227,8 @@ def FormWritter(config,uid,stage):
         doDevil=   int(source[stage][96])
     except:
         print("This cat is older than 7.0, not exist ancient")
-        
+    print("doDevil?")
+    print(doDevil)
     if(doRed+doFloat+doBlack+doIron+doWhite+doAngel+doAlien+doUnded+doAncient+doDevil>0):
         existColor = True;
     #Ability Calculation
@@ -293,6 +388,8 @@ def FormWritter(config,uid,stage):
 
 
     #Fill Atk Blenks
+    atk = int(atk*instinctatk)
+    hp = int(hp * instincthp)
     #1 Atk
     if(not(doGoodAt==1 or doSuperDmg==1 or doUltraDmg==1)): #Check if need the Tempalte or not
         str1 = "Temp11"
@@ -302,7 +399,7 @@ def FormWritter(config,uid,stage):
     ansval = 1.0
     for i in range(0,7):
         if(i<5):
-            cst = 5 * i + 7
+            cst = lc[i]
             tempstr = "_at."+str(i+1);
         else:
             cst = 0.5
@@ -344,7 +441,7 @@ def FormWritter(config,uid,stage):
     i = 0
     for i in range(0,7):
         if(i<5):
-            cst = 5 * i + 7
+            cst = lc[i]
             tempstr = "_hp."+str(i+1);
         else:
             cst = 0.5
@@ -386,7 +483,7 @@ def FormWritter(config,uid,stage):
     i = 0
     for i in range(0,7):
         if(i<5):
-            cst = 5 * i + 7
+            cst = lc[i]
             tempstr = "_hd."+str(i+1);
         else:
             cst = 0.5
@@ -455,7 +552,7 @@ def FormWritter(config,uid,stage):
     i = 0
     for i in range(0,7):
         if(i<5):
-            cst = 5 * i + 7
+            cst = lc[i]
             tempstr = "_dp."+str(i+1);
             rdpoint = 0
         else:
@@ -532,7 +629,10 @@ def FormWritter(config,uid,stage):
     raw = raw.replace("_fq2",str4) #出招時間
 
     raw = raw.replace("_fq1",str(round(atkfq/30,2))+" 秒/下") #攻擊頻率
-    raw = raw.replace("_fq4",str(round((regen*2-254)/30,2))) #再生產
+    realregen = regen*2-254
+    if(realregen<=60):
+        realregen = 60        
+    raw = raw.replace("_fq4",str(round(realregen/30,2))) #再生產
 
     str7 = str(arange)
     if(arrange2==0):
@@ -616,7 +716,10 @@ def FormWritter(config,uid,stage):
         SPAbility = SPAbility + str(doCri) + "%機率使出會心一擊\n"
     if(doCriEx>0):
         SPAbility = SPAbility + str(doCriEx) + "%機率使出"+str(doCriEx2+100)+"%渾身一擊\n"
-
+    if(doAtkTime==1):
+        SPAbility = SPAbility + "一回攻擊\n"
+    if(inter1==0):
+        SPAbility = SPAbility + "擊退反擊\n"
     if(ulwave):
         SPAbility = SPAbility + str(ulwave) + "%機率放出Lv"+str(ulwave_num)+"烈波(出現位置"+str(int(ulwave_dist/4))+"~"+str(int((ulwave_dist+ulwave_range)/4))+")\n"
     if(doWave):

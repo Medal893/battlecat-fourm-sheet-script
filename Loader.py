@@ -19,6 +19,8 @@ except:
                          'activeModeAsk': '0',
                          'withimage': '0',
                          'UIDSaveFileName': '0',
+                         'instinctatk' : '0',  #是否啟用本能
+                         'instincthp' : '0',
                          'DefaultOutputFileName':'out.txt'
                          }
     config['LEVEL'] = {'mode1'  : '10,20,30,40,50', #Default Mode
@@ -27,19 +29,21 @@ except:
                        'mode4'  : '30,40,45,50,60', #Default for SSR.
                        'mode5'  : '10,20,25,30,40', #Default for 巴哈姆特
                        'mode6'  : '10,20,30,40,50', #Default for 狂亂
-                       'mode7'  : '10,20,30,40,50',
-                       'mode8'  : '10,20,30,40,50',
-                       'mode9'  : '10,20,30,40,50',
+                       'mode7'  : '60,80,100,120,130', #R/SR拓展
+                       'mode8'  : '10,20,30,40,50',    #備用
+                       'mode9'  : '10,20,30,40,50',    #備用
                        'mode1rd': ' -1,-1,-1,-1,-1', #不減益遞減
-                       'mode2rd': ' 70,90,130,-1,-1',
+                       'mode2rd': ' 70,90,130,-1,-1', #Mode2的第一個遞減點,第二個,第三個,第四個,第五個, -1 = 留空
                        'mode3rd': ' 60,80,100,-1,-1',
                        'mode4rd': ' 60,80,100,-1,-1',
-                       'mode5rd': ' 35,-1,-1,-1,-1',
+                       'mode5rd': ' 30,-1,-1,-1,-1',
                        'mode6rd': ' 20,-1,-1,-1,-1',
-                       'mode7rd': ' -1,-1,-1,-1,-1',
+                       'mode7rd': ' 70,90,130,-1,-1',
                        'mode8rd': ' -1,-1,-1,-1,-1',
                        'mode9rd': ' -1,-1,-1,-1,-1'
                        
+                       }
+    config['CONST'] = {'maxlevel': '130'
                        }
     config['IMAGE'] = {'doRed'  : '[img=https://i.imgur.com/HagkEhI.png]',
                        'doFloat': '[img=https://i.imgur.com/XmW79pT.png]',
