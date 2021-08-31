@@ -29,7 +29,8 @@ def FormWritter(config,uid,stage):
     import configparser
     import numpy as np
     import csv
-    import Animation_Length as ani
+    import Animation_Length2 as ani
+    import Animation_Length as ani_old
     import MultiAttack_effect as ma
     import sys
     try:
@@ -61,7 +62,11 @@ def FormWritter(config,uid,stage):
     try:
         atk_anil = ani.getAniLength(uid,stage)
     except:
-        print("Animation infor not exist or failed")
+        print("Animation infor not exist or failed with new method, try old one")
+        try:
+            atk_anil = ani_old.getAniLength(uid,stage)
+        except:
+            print("Still failed with original method, do file existt? report if possible if you sure file exist")
     atk_allinf =  187 #frame.
     ##POS
     #open files.
@@ -317,7 +322,7 @@ def FormWritter(config,uid,stage):
     isEvaKiller = 0
     doAtkTime = -1
     doLifeTime = -1
-    doBreaShield = 0
+    doBreakShield = 0
     doBreakDevilShield = 0
     #Other ability.
     try:
@@ -327,7 +332,6 @@ def FormWritter(config,uid,stage):
         doAtkTime = int(source[stage][55])#攻擊回數, should be -1
         doLifeTime = int(source[stage][57])#生存時長, should be -1
         doBreakShield = int(source[stage][70]) #破盾機率
-        #96-1 = 95
         doBreakDevilShield = int(source[stage][95])#破惡魔盾機率
         
     except:
@@ -539,7 +543,16 @@ def FormWritter(config,uid,stage):
     doCriEx2 = 0
     '''
     print(atk)
-    atk = (1+(doCri/100))*(1+(doCriEx2/100)*(doCriEx/100))*atk
+    expatk1 = atk1
+    expatk2 = atk2
+    expatk3 = atk3
+    if(doAtk1Aff):
+        expatk1 = (1+(doCri/100))*(1+(doCriEx2/100)*(doCriEx/100))*atk1
+    if(doAtk2Aff):
+        expatk2 = (1+(doCri/100))*(1+(doCriEx2/100)*(doCriEx/100))*atk2
+    if(doAtk3Aff):
+        expatk3 = (1+(doCri/100))*(1+(doCriEx2/100)*(doCriEx/100))*atk3
+    atk = expatk1 + expatk2 + expatk3
     print("加權後攻擊力:")
     print(atk)
     print(atk_anil)
@@ -728,6 +741,10 @@ def FormWritter(config,uid,stage):
             SPAbility = SPAbility + str(doWave) + "%機率放出Lv"+str(doWave2)+"波動\n"
     if(doPowerUp):
         SPAbility = SPAbility + "血量"+str(doPowerUp)+"%以下攻擊力"+str(round(1+doPowerUp2/100,2))+"倍\n"
+    if(doBreakShield):
+        SPAbility = SPAbility + str(doBreakShield) + "%機率破宇宙盾\n"
+    if(doBreakDevilShield):
+        SPAbility = SPAbility + str(doBreakDevilShield) + "%機率破惡魔盾\n"
     if(doCastleDmg):
         SPAbility = SPAbility + "善於攻城(4倍傷害)\n"
     if(doDoubleMoney):

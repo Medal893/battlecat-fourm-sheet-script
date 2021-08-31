@@ -17,7 +17,7 @@ except:
                          'activeUIDAsk': '1',
                          'activeStageAsk': '1',
                          'activeModeAsk': '0',
-                         'withimage': '0',
+                         'withimage': '1',
                          'UIDSaveFileName': '0',
                          'instinctatk' : '0',  #是否啟用本能
                          'instincthp' : '0',
@@ -69,7 +69,7 @@ except:
                        'doAtkUP':        '[img=https://i.imgur.com/iFBwnpR.png]',
                        'doUltraDmg'  :   '[img=https://i.imgur.com/Hw8Zo0B.png]',
                        'doCri'       :   '[img=https://i.imgur.com/dKiP1zw.png]',
-                       'curse'       :   '[img=https://i.imgur.com/Pj26dNE.png]',
+                       'curse'       :   '[img=https://i.imgur.com/Pj26d    NE.png]',
                        'doImAtkDown' :   '[img=https://i.imgur.com/IHiXuOn.png]',
                        'doOnlyAttack':   '[img=https://i.imgur.com/gLpCuYC.png]',
                        'doFarAtk'    :   '[img=https://i.imgur.com/n9qTz6q.png]',
