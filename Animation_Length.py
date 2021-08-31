@@ -12,7 +12,9 @@ def getAniLength(name,stage):
     totaltime = 0
     intname = int(name)
     intname = intname-1 #Shit Shift between module definition(start from 0) and unit definition(start from 1)
-    if name<99:
+    if intname<=9:
+        strname = "00"+str(intname)
+    elif intname<=99:
         strname = "0"+str(intname)
     else:
         strname = str(intname)
